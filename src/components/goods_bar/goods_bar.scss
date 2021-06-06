@@ -1,0 +1,40 @@
+.goods-bar {
+  width: 100%;
+  min-height: 50px;
+  background-color: rgba(202, 202, 202, .2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__search {
+    display: block;
+    padding: 5px;
+    height: 30px;
+    max-width: 120px;
+    background-color: grey;
+    color: white;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding: 0 0 0 8px;
+
+    &::placeholder {
+      color: white;
+    }
+  }
+
+  &__add-btn {
+    margin-right: 10px;
+    height: 30px;
+    width: 100px;
+    display: block;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: grey;
+    color: white;
+    transition: .3s transform;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

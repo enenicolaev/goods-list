@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import "./error_message.scss";
+import "./error_boundary.scss";
 
-class ErrorMessage extends Component {
+class ErrorBoundary extends Component {
+
   state = {
     error: false,
   }
@@ -22,4 +23,4 @@ class ErrorMessage extends Component {
   }
 }
 
-export default ErrorMessage;
+export default ErrorBoundary;

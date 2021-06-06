@@ -1,29 +1,71 @@
 import GoodsStorage from "../services/goods_storage";
 
 const goodsStorage = new GoodsStorage();
-const startGoods = goodsStorage.getGoods();
-const defaultGoods = goodsStorage.getDefaultGoods();
 
 const initialState = {
-  goods: startGoods ? startGoods : defaultGoods,
+  goods: [],
   error: false,
+  loading: true,
 }
 
 const reducer = (state = initialState, action) => {
-  const {type, newGoods} = action;
-  console.log(newGoods)
-  switch (type){
-    case 'NEW_GOODS_LIST':
+  switch (action.type) {
+    case 'GOODS_LOADED':
+      return {
+        ...state,
+        loading: false,
+        goods: action.payload,
+      }
+    case 'GOODS_REQUESTED':
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      }
+    case 'GOODS_ERROR':
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      }
+    case 'ADD_GOOD':
+      const newGood = {...action.payload}
+      const newGoodsArr = [
+        ...state.goods,
+        newGood,
+      ];
+      goodsStorage.setGoods(newGoodsArr);
+      return {
+        ...state,
+        goods: newGoodsArr,
+      };
+    case 'DEL_GOOD':
+      const id = action.payload;
+      const itemIndex = state.goods.findIndex(item => item.id === id);
+      console.log(itemIndex)
+      if (itemIndex === -1) return {
+        ...state,
+      };
+      const newGoods = [
+        ...state.goods.slice(0, itemIndex),
+        ...state.goods.slice(itemIndex + 1),
+      ];
+      console.log(newGoods)
       goodsStorage.setGoods(newGoods);
       return {
+        ...state,
         goods: newGoods,
-        erroe: false,
       };
-    case 'GOODS_ERROR':
-      return { 
-        state: state,
-        error: true,
-      };
+    case 'EDIT_GOOD':
+      const {name: editedName, amount: editedAmount, id: editedID} = action.payload;
+      const index = state.goods.findIndex(item => item.id === editedID);
+      console.log(index, {editedName, editedAmount, editedID})
+      state.goods[index].name = editedName;
+      state.goods[index].amount = editedAmount;
+      goodsStorage.setGoods(state.goods);
+      return {
+        ...state,
+      }
     default:
       return state;
   }

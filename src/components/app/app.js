@@ -4,8 +4,9 @@ import "./app.scss";
 
 import Header from "../header";
 import Container from "../container";
-import ErrorMessage from "../error_message";
+import ErrorBoundary from "../error_boundary";
 import GoodsList from "../goods_list";
+import GoodsBar from "../goods_bar";
 
 class App extends Component {
 
@@ -22,15 +23,15 @@ class App extends Component {
   render() {
 
     if (this.state.error) {
-      return <ErrorMessage/>
+      return <ErrorBoundary/>
     }
-
 
     return (
       <Router>
         <div className="app">
           <Container>
             <Header/>
+            <GoodsBar />
             <Route path = "/" exact component = {GoodsList}/>
           </Container>
         </div>

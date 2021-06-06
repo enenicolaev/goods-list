@@ -1,29 +1,41 @@
-import store from "./store";
-import { deleteGood, addGood, editGoods } from "../utils/goods_utils";
-
-export const edit = ({field, value, id}) => {
-  const goodsArr = store.getState().goods;
+export const goodsLoaded = (newGoods) => {
   return {
-    type: 'NEW_GOODS_LIST',
-    newGoodsList: editGoods({goodsArr, field, value, id}),
+    type: 'GOODS_LOADED',
+    payload: newGoods,
   }
 };
 
-export const add = ({name, amount}) => {
-  const goodsArr = store.getState().goods;
+export const goodsRequested = () => {
   return {
-    type: 'NEW_GOODS_LIST',
-    newGoodsList: addGood({goodsArr, name, amount}),
+    type: 'GOODS_REQUESTED',
   }
 };
 
-export const del = (id) => {
-  const goodsArr = [...store.getState().goods];
-  console.log(goodsArr)
-  const newGoods = deleteGood({goodsArr, id});
+export const goodsError = () => {
   return {
-    type: 'NEW_GOODS_LIST',
-    newGoods: [],
+    type: 'GOODS_ERROR',
+  }
+};
+
+
+export const editGood = (goodParams) => {
+  return {
+    type: 'EDIT_GOOD',
+    payload: goodParams,
+  }
+};
+
+export const addGood = (params) => {
+  return {
+    type: 'ADD_GOOD',
+    payload: params,
+  }
+};
+
+export const delGood = (id) => {
+  return {
+    type: 'DEL_GOOD',
+    payload: id,
   };
 };
 

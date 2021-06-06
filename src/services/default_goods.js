@@ -1,16 +1,18 @@
+import { nanoid } from "nanoid";
+
 const defaultGoods = [
   {
-    id: 0,
+    id: nanoid(),
     name: "Помидоры",
     amount: 4,
   },
   {
-    id: 1,
+    id: nanoid(),
     name: "Огурцы",
     amount: 2,
   },
   {
-    id: 2,
+    id: nanoid(),
     name: "Консервы",
     amount: 1,
   },

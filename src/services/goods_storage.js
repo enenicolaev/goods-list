@@ -2,22 +2,22 @@ import defaultGoods from "./default_goods";
 
 class GoodsStorage {
   constructor() {
-    this._storage = window.localStorage;
+    this._localStorage = window.localStorage;
     this._goods = null;
   }
 
   setGoods(goods) {
     this._goods = goods;
     const serializedGoods = JSON.stringify(this._goods);
-    this._storage.setItem("goods", serializedGoods);
+    this._localStorage.setItem("goods", serializedGoods);
   }
 
   getGoods() {
-    const goods = this._storage.getItem("goods");
+    const goods = JSON.parse(this._localStorage.getItem("goods"));
     if (!goods || !Array.isArray(goods)) {
       return null;
     }
-    return JSON.parse(goods);
+    return goods;
   }
 
   setDefaultGoods() {
