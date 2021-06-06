@@ -1,4 +1,4 @@
-import GoodsStorage from "../services/LocalStorageHandler";
+import GoodsStorage from "../services/goods_storage";
 
 const goodsStorage = new GoodsStorage();
 const startGoods = goodsStorage.getGoods();
@@ -10,21 +10,13 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  const {type,  goods} = action;
+  const {type, newGoods} = action;
+  console.log(newGoods)
   switch (type){
-    case 'EDIT_GOOD':
+    case 'NEW_GOODS_LIST':
+      goodsStorage.setGoods(newGoods);
       return {
-        goods,
-        erroe: false,
-      };
-    case 'ADD_GOOD':
-      return {
-        goods,
-        erroe: false,
-      };
-    case 'DELETE_GOOD':
-      return {
-        goods,
+        goods: newGoods,
         erroe: false,
       };
     case 'GOODS_ERROR':

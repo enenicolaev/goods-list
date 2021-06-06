@@ -1,17 +1,17 @@
 const defaultGoods = [
   {
     id: 0,
-    name: "Товар №1",
+    name: "Помидоры",
     amount: 4,
   },
   {
     id: 1,
-    name: "Товар №2",
+    name: "Огурцы",
     amount: 2,
   },
   {
-    id: 3,
-    name: "Товар №3",
+    id: 2,
+    name: "Консервы",
     amount: 1,
   },
 ];

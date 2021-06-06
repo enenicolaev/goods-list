@@ -2,30 +2,32 @@ import store from "./store";
 import { deleteGood, addGood, editGoods } from "../utils/goods_utils";
 
 export const edit = ({field, value, id}) => {
-  const state = store.getState();
+  const goodsArr = store.getState().goods;
   return {
-    type: 'EDIT_GOOD',
-    goods: editGoods({state, field, value, id}),
+    type: 'NEW_GOODS_LIST',
+    newGoodsList: editGoods({goodsArr, field, value, id}),
   }
 };
 
 export const add = ({name, amount}) => {
-  const state = store.getState();
+  const goodsArr = store.getState().goods;
   return {
-    type: 'ADD_GOOD',
-    goods: addGood({state, name, amount}),
+    type: 'NEW_GOODS_LIST',
+    newGoodsList: addGood({goodsArr, name, amount}),
   }
 };
 
 export const del = (id) => {
-  const state = store.getState();
+  const goodsArr = [...store.getState().goods];
+  console.log(goodsArr)
+  const newGoods = deleteGood({goodsArr, id});
   return {
-    type: 'DELETE_GOOD',
-    goods: deleteGood({state, id}),
+    type: 'NEW_GOODS_LIST',
+    newGoods: [],
   };
 };
 
 export const errorGoods = () => ({
-  type: 'GOODS_ERROR'
+  type: 'GOODS_ERROR',
 });
 
