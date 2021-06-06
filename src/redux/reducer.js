@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
         error: true,
       }
     case 'ADD_GOOD':
-      const newGood = {...action.payload}
+      const newGood = {...action.payload};
       const newGoodsArr = [
         ...state.goods,
         newGood,
@@ -42,7 +42,6 @@ const reducer = (state = initialState, action) => {
     case 'DEL_GOOD':
       const id = action.payload;
       const itemIndex = state.goods.findIndex(item => item.id === id);
-      console.log(itemIndex)
       if (itemIndex === -1) return {
         ...state,
       };
@@ -50,7 +49,6 @@ const reducer = (state = initialState, action) => {
         ...state.goods.slice(0, itemIndex),
         ...state.goods.slice(itemIndex + 1),
       ];
-      console.log(newGoods)
       goodsStorage.setGoods(newGoods);
       return {
         ...state,
@@ -59,7 +57,6 @@ const reducer = (state = initialState, action) => {
     case 'EDIT_GOOD':
       const {name: editedName, amount: editedAmount, id: editedID} = action.payload;
       const index = state.goods.findIndex(item => item.id === editedID);
-      console.log(index, {editedName, editedAmount, editedID})
       state.goods[index].name = editedName;
       state.goods[index].amount = editedAmount;
       goodsStorage.setGoods(state.goods);

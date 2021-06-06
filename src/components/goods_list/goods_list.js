@@ -91,9 +91,12 @@ class GoodsList extends Component {
     })
   }
 
-  openModal() {
+  openModal(name, amount, id) {
     this.setState({
       isModalOpened: true,
+      nameModalValue: name,
+      amountModalValue: amount,
+      idModalValue: id,
     })
   }
 
@@ -114,8 +117,8 @@ class GoodsList extends Component {
     }
     const agreement = window.confirm("Вы уверены, что хотите изменить товар?")
     if (agreement) {
-      this.closeModal();
       this.props.editGood(params);
+      this.closeModal();
     }
   }
 
@@ -143,7 +146,7 @@ class GoodsList extends Component {
                   amount={amount}
                   onDelete={() => delGood(id)}
                   onEdit={() => {
-                    this.openModal();
+                    this.openModal(name, amount, id);
                     this.setModalContent(name, amount, id);
                   }}/>
               )

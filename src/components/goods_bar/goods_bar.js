@@ -15,14 +15,22 @@ class GoodsBar extends Component {
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.onSubmitModalHandler = this.onSubmitModalHandler.bind(this);
+    this.onUpdateSearch = this.onUpdateSearch.bind(this);
   }
 
   state = {
+    term: "",
     isModalOpened: false,
     modalContent: null,
     nameModalValue: null,
     amountModalValue: null,
     idModalValue: null,
+  }
+
+  onUpdateSearch(e) {
+    const term = e.target.value;
+    this.setState({term});
+    this.props.onUpdateSearch(term);
   }
 
   closeModal() {
@@ -68,9 +76,8 @@ class GoodsBar extends Component {
       name: nameModalValue,
       amount: amountModalValue,
     }
-    console.log(params)
-    this.closeModal();
     this.props.addGood(params);
+    this.closeModal();
   }
 
   render() {
@@ -79,7 +86,10 @@ class GoodsBar extends Component {
     return (
       <>
         <div className="goods-bar">
-          <input placeholder="Поиск" className="goods-bar__search"/>
+          <input
+            placeholder="Поиск"
+            className="goods-bar__search"
+            onChange={this.onUpdateSearch}/>
           <button className="goods-bar__add-btn" onClick={this.openModal}>
             <span>Добавить</span>
           </button>

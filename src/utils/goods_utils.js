@@ -24,7 +24,6 @@ function addGood({goodsArr, name, amount}) {
 function deleteGood({goodsArr, id}) {
   const index = goodsArr.findIndex(elem => elem.id === id);
   if (index === -1) return goodsArr;
-  console.log(goodsArr.splice(index, 1))
   return goodsArr.splice(index, 1);
 }
 
