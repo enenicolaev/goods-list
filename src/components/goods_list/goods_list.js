@@ -15,6 +15,7 @@ class GoodsList extends Component {
     this.setContentAndOpenModal = this.setContentAndOpenModal.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
+    this.deleteGood = this.deleteGood.bind(this);
     this.onSubmitModalHandler = this.onSubmitModalHandler.bind(this);
   }
 
@@ -73,7 +74,7 @@ class GoodsList extends Component {
         <input
           className="modal__input"
           placeholder="Количество"
-          type="text"
+          type="number"
           defaultValue={amount}
           onChange={this.onAmountChange}
         />
@@ -82,7 +83,7 @@ class GoodsList extends Component {
     this.setState({
       modalContent: content,
       isModalOpened: true,
-    })
+    });
   }
 
   closeModal() {
@@ -116,6 +117,11 @@ class GoodsList extends Component {
     }
   }
 
+  deleteGood(id, name) {
+    const agreement = window.confirm(`Вы действительно хотите удалить товар ${name}`);
+    if (agreement) this.props.delGood(id);
+  }
+
   filterGoods(goods) {
     let {searchTerm} = this.props;
     if (searchTerm.length === 0) return goods;
@@ -127,14 +133,14 @@ class GoodsList extends Component {
   }
 
   render() {
-    const {loading, error} = this.props;
+    const {loading, error, goods} = this.props;
     if (loading) {
       return <Loading />
     }
     if (error) {
       throw new Error("error in 'goods_list' component, in render method")
     }
-    const {goods, delGood} = this.props;
+    const {isModalOpened, modalContent} = this.state;
     const fiteredGoods = this.filterGoods(goods)
     return (
       <>
@@ -149,7 +155,7 @@ class GoodsList extends Component {
                   id={id}
                   name={name}
                   amount={+amount}
-                  onDelete={() => delGood(id)}
+                  onDelete={() => this.deleteGood(id, name)}
                   onEdit={() => {
                     this.setContentAndOpenModal(name, amount, id);
                   }}/>
@@ -159,10 +165,10 @@ class GoodsList extends Component {
         </div>
         <Modal
           title="Редактировать товар"
-          isOpen={this.state.isModalOpened}
+          isOpen={isModalOpened}
           onCancel={this.closeModal}
           onSubmit={this.onSubmitModalHandler}>
-            {this.state.modalContent}
+            {modalContent}
         </Modal>
       </>
     );

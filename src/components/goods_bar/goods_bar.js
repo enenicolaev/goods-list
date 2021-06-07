@@ -111,6 +111,7 @@ class GoodsBar extends Component {
             <div>
               <input
                 className="modal__input"
+                type="number"
                 placeholder="Количество"
                 onChange={this.handleAmountChange}
               />
