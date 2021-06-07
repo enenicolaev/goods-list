@@ -43,3 +43,9 @@ export const errorGoods = () => ({
   type: 'GOODS_ERROR',
 });
 
+export const onUpdateSearch = (searchTerm) => ({
+  type: 'UPDATE_SEARCH',
+  payload: {
+    searchTerm,
+  },
+});

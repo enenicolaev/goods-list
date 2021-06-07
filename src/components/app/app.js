@@ -8,6 +8,8 @@ import ErrorBoundary from "../error_boundary";
 import GoodsList from "../goods_list";
 import GoodsBar from "../goods_bar";
 
+import GoodPage from "../../pages/good_page";
+
 class App extends Component {
 
   state = {
@@ -22,17 +24,19 @@ class App extends Component {
   
   render() {
 
-    if (this.state.error) {
-      return <ErrorBoundary/>
-    }
-
     return (
       <Router>
         <div className="app">
           <Container>
             <Header/>
-            <GoodsBar />
-            <Route path = "/" exact component = {GoodsList}/>
+            <GoodsBar/>
+            <ErrorBoundary message="Произошла ошибка, список товаров недоступен">
+              <Route path = "/" exact component={GoodsList}/>
+              <Route path="/goods/:id" render={({match}) => {
+                const {id} = match.params;
+                return <GoodPage selectedGoodId={id} />;
+              }}/>
+            </ErrorBoundary>
           </Container>
         </div>
       </Router>

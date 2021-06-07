@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import * as actions from "../../redux/actions";
-// import {delGood, editGood, goodsLoaded, goodsRequested, goodsError} from "../../redux/actions";
 import GoodsItem from "../goods_item";
 import Loading from "../loading"
-import GoodsStorageContext from "../goods_storage_context";
+import GoodsStorageContext from "../../context/goods_storage_context";
 import Modal from "../modal";
 import "./goods_list.scss";
 
@@ -12,11 +11,10 @@ class GoodsList extends Component {
 
   constructor(props) {
     super(props)
-    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.setModalContent = this.setModalContent.bind(this);
-    this.handleAmountChange = this.handleAmountChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
+    this.setContentAndOpenModal = this.setContentAndOpenModal.bind(this);
+    this.onAmountChange = this.onAmountChange.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
     this.onSubmitModalHandler = this.onSubmitModalHandler.bind(this);
   }
 
@@ -36,26 +34,30 @@ class GoodsList extends Component {
       this.props.goodsLoaded(goods);
     } catch(e) {
       this.props.goodsError();
+      throw new Error(e);
     }
   }
   
-  handleNameChange(e) {
+  onNameChange(e) {
     const value = e.target.value;
     this.setState({
       nameModalValue: value,
     });
   }
 
-  handleAmountChange(e) {
+  onAmountChange(e) {
     const value = e.target.value;
     this.setState({
       amountModalValue: value,
     });
   }
 
-  setModalContent(name, amount, id) {
-    name = name ? name : "";
-    amount = amount ? amount : "";
+  setContentAndOpenModal(name, amount, id) {
+    this.setState({
+      nameModalValue: name,
+      amountModalValue: amount,
+      idModalValue: id,
+    });
     const content = <div>
       <div className="modal__input-title">Название товара</div>
       <div>
@@ -63,7 +65,7 @@ class GoodsList extends Component {
           className="modal__input"
           placeholder="Название"
           defaultValue={name}
-          onChange={this.handleNameChange}
+          onChange={this.onNameChange}
         />
       </div>
       <div className="modal__input-title">Количество товара</div>
@@ -71,14 +73,15 @@ class GoodsList extends Component {
         <input
           className="modal__input"
           placeholder="Количество"
+          type="text"
           defaultValue={amount}
-          onChange={this.handleAmountChange}
+          onChange={this.onAmountChange}
         />
       </div>
     </div>;
     this.setState({
       modalContent: content,
-      idModalValue: id,
+      isModalOpened: true,
     })
   }
 
@@ -88,15 +91,6 @@ class GoodsList extends Component {
       nameModalValue: null,
       amountModalValue: null,
       idModalValue: null,
-    })
-  }
-
-  openModal(name, amount, id) {
-    this.setState({
-      isModalOpened: true,
-      nameModalValue: name,
-      amountModalValue: amount,
-      idModalValue: id,
     })
   }
 
@@ -122,32 +116,42 @@ class GoodsList extends Component {
     }
   }
 
+  filterGoods(goods) {
+    let {searchTerm} = this.props;
+    if (searchTerm.length === 0) return goods;
+    searchTerm = searchTerm.toLowerCase();
+    return goods.filter(item => {
+      const name = item.name.toLowerCase();
+      return name.indexOf(searchTerm) > -1;
+    });
+  }
+
   render() {
     const {loading, error} = this.props;
     if (loading) {
       return <Loading />
     }
     if (error) {
-      // not sure that it works
-      this.componentDidCatch();
+      throw new Error("error in 'goods_list' component, in render method")
     }
     const {goods, delGood} = this.props;
+    const fiteredGoods = this.filterGoods(goods)
     return (
       <>
         <div className="goods-list">
           <div className="goods-list__title">Список товаров</div>
           {
-            goods.map(item => {
+            fiteredGoods.map(item => {
               const {id, amount, name} = item;
               return (
                 <GoodsItem
                   key={id}
+                  id={id}
                   name={name}
-                  amount={amount}
+                  amount={+amount}
                   onDelete={() => delGood(id)}
                   onEdit={() => {
-                    this.openModal(name, amount, id);
-                    this.setModalContent(name, amount, id);
+                    this.setContentAndOpenModal(name, amount, id);
                   }}/>
               )
             })
@@ -165,12 +169,8 @@ class GoodsList extends Component {
   }
 }
 
-function mapStateToProps({goods, loading, error}) {
-  return {
-    goods,
-    loading,
-    error,
-  }
+function mapStateToProps(state) {
+  return state;
 }
 
 GoodsList.contextType = GoodsStorageContext;

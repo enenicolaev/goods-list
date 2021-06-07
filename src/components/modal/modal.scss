@@ -67,6 +67,7 @@
 
   &__footer {
     margin-top: auto;
+    padding-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,6 +75,7 @@
   }
 
   &__btn {
+    width: 100px;
     border-radius: 10px;
     background-color: grey;
     padding: 10px;
@@ -81,6 +83,14 @@
     transition: .3s all;
     &:hover {
       transform: scale(1.1);
+    }
+
+    &_sub {
+      background-color: green;
+    }
+
+    &_den {
+      background-color: red;
     }
   }
 }

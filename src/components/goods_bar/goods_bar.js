@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {nanoid} from "nanoid";
 import Modal from "../modal";
-import {addGood} from "../../redux/actions";
+import {addGood, onUpdateSearch} from "../../redux/actions";
 import {connect} from "react-redux";
 
 import "./goods_bar.scss";
@@ -19,7 +19,6 @@ class GoodsBar extends Component {
   }
 
   state = {
-    term: "",
     isModalOpened: false,
     modalContent: null,
     nameModalValue: null,
@@ -29,7 +28,6 @@ class GoodsBar extends Component {
 
   onUpdateSearch(e) {
     const term = e.target.value;
-    this.setState({term});
     this.props.onUpdateSearch(term);
   }
 
@@ -124,10 +122,17 @@ class GoodsBar extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = ({searchTerm}) => {
   return {
-    addGood: (param) => dispatch(addGood(param)), 
+    searchTerm,
   }
 }
 
-export default connect(null, mapDispatchToProps)(GoodsBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addGood: (param) => dispatch(addGood(param)),
+    onUpdateSearch: (searchTerm) => dispatch(onUpdateSearch(searchTerm)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoodsBar);

@@ -16,7 +16,7 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.error) return (
       <div className="error-msg">
-        Произошла ошибка
+        {this.props.message}
       </div>
     );
     return this.props.children;

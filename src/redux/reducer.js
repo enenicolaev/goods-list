@@ -4,6 +4,7 @@ const goodsStorage = new GoodsStorage();
 
 const initialState = {
   goods: [],
+  searchTerm: "",
   error: false,
   loading: true,
 }
@@ -62,6 +63,12 @@ const reducer = (state = initialState, action) => {
       goodsStorage.setGoods(state.goods);
       return {
         ...state,
+      }
+    case 'UPDATE_SEARCH':
+      const {searchTerm} = action.payload;
+      return {
+        ...state,
+        searchTerm,
       }
     default:
       return state;
